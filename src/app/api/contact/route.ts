@@ -51,7 +51,12 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL || "hello@georgieslexington.com";
+  const generalTo = process.env.CONTACT_TO_EMAIL || "hello@georgieslexington.com";
+  const eventsTo = process.env.CONTACT_EVENTS_EMAIL || "events@georgieslexington.com";
+  // Event-related inquiries route to the events inbox; everything else
+  // (general questions) goes to the general inbox.
+  const isEventInquiry = inquiryType !== "" && inquiryType !== "General question";
+  const to = isEventInquiry ? eventsTo : generalTo;
   const from = process.env.CONTACT_FROM_EMAIL || "Georgie's Website <onboarding@resend.dev>";
 
   // If email is not configured yet, accept the submission without failing the

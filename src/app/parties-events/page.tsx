@@ -22,14 +22,14 @@ type Event = {
 const EVENTS: Event[] = [
   {
     heading: "Friday Supper Club",
-    image: "/images/parties-friday-supper-club.jpg",
+    image: "/images/parties-events.jpg",
     alt: "Food being served at the event venue in Lexington, KY",
     body: "Rather than traditional seating, embrace the joy of mingling in our uniquely designed venue. Handcrafted cocktails, a curated selection of wines and bourbons, and exceptional service set the stage for a gathering that fosters connection and laughter.",
     cta: { label: "inquire now", href: "/contact" },
   },
   {
     heading: "Bridal & Baby Showers",
-    image: "/images/parties-bridal-baby-showers.jpg",
+    image: "/images/bridal-shower-events.jpg",
     alt: "Loved ones enjoying an intimate bridal shower party",
     imagePosition: "top",
     body: "Immerse yourself in a gorgeous atmosphere with a curated selection of wines, cocktails, charcuterie, and nosh. Our stylish venue is the perfect backdrop for creating unforgettable memories with the people who matter most.",
@@ -37,14 +37,21 @@ const EVENTS: Event[] = [
   },
   {
     heading: "Private Events",
-    image: "/images/parties-private-events.jpg",
+    image: "/images/private-event.jpg",
     alt: "A private event set up at Georgie's Social House bar",
     body: "Georgie’s Social House offers an exclusive setting for private events. Whether it is a birthday, rehearsal dinner, or corporate gathering, enjoy our stylish and inviting bar atmosphere reserved just for your group.",
     cta: { label: "inquire now", href: "/contact" },
   },
   {
+    heading: "Corporate Events",
+    image: "/images/corporate-events.jpg",
+    alt: "A corporate gathering at Georgie's Social House in Lexington, KY",
+    body: "Host your next team gathering at Georgie’s. From client receptions and team-building outings to holiday parties and networking mixers, our stylish venue and polished service make every corporate event feel effortless and memorable.",
+    cta: { label: "inquire now", href: "/contact" },
+  },
+  {
     heading: "Happy Hour Party",
-    image: "/images/parties-happy-hour.jpg",
+    image: "/images/happy-hour-events.jpg",
     alt: "Guests enjoying a happy hour party at Georgie's Social House",
     body: "Our happy hours are more than a time to unwind. Join us Wednesday through Friday until 7pm for special rates on drinks and nosh, plus reserved tables in a setting that encourages connection and creativity. It is team building, elevated.",
     cta: { label: "explore happy hour", href: "/menu" },
@@ -79,6 +86,7 @@ export default function PartiesEventsPage() {
                 image={e.image}
                 alt={e.alt}
                 imagePosition={e.imagePosition}
+                imageAspect="aspect-[3/2]"
                 heading={e.heading}
                 description={e.body}
                 cta={e.cta}

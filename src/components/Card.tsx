@@ -5,6 +5,8 @@ type CardProps = {
   image: string;
   alt: string;
   imagePosition?: "top" | "center" | "bottom";
+  /** Tailwind aspect-ratio class for the image frame. Defaults to portrait 4/5. */
+  imageAspect?: string;
   heading: string;
   description: string;
   cta: { label: string; href: string };
@@ -24,13 +26,14 @@ export default function Card({
   image,
   alt,
   imagePosition = "center",
+  imageAspect = "aspect-[4/5]",
   heading,
   description,
   cta,
 }: CardProps) {
   return (
     <Link href={cta.href} className="group flex flex-col">
-      <div className="relative aspect-[4/5] w-full overflow-hidden">
+      <div className={`relative ${imageAspect} w-full overflow-hidden`}>
         <Image
           src={image}
           alt={alt}
