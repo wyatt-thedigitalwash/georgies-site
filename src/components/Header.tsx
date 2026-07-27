@@ -195,7 +195,7 @@ export default function Header() {
         ref={panelRef}
         aria-label="Mobile navigation"
         inert={!open}
-        className={`grid overflow-hidden bg-sand transition-all duration-300 ease-out md:hidden ${
+        className={`relative z-50 grid overflow-hidden bg-sand transition-all duration-300 ease-out md:hidden ${
           open ? "grid-rows-[1fr] border-t border-ink/10 opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
