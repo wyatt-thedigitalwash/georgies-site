@@ -22,12 +22,12 @@ const REFINED_IMAGES = [
     offset: "",
   },
   {
-    src: "/images/studio-376.jpg",
+    src: "/images/gallery-10.jpg",
     alt: "A craft cocktail being poured at Georgie's Social House in Lexington, KY",
     offset: "sm:mt-10",
   },
   {
-    src: "/images/studio-419.jpg",
+    src: "/images/home-refined-adulting.jpg",
     alt: "A cocktail and the atmosphere at Georgie's Social House in Lexington, KY",
     offset: "sm:mt-20",
   },
@@ -42,7 +42,7 @@ const HERO_LINKS = [
 const CARDS = [
   {
     heading: "Our Cocktails",
-    image: "/images/studio-72.jpg",
+    image: "/images/gallery-05.jpg",
     alt: "A handcrafted coupe cocktail at Georgie's Social House in Lexington, KY",
     description:
       "One-of-a-kind craft cocktails, developed in-house by our mixologist Donny and named for famous Georges. Our menu changes seasonally with the freshest ingredients, and we pour stellar zero-proof options too.",
@@ -50,7 +50,7 @@ const CARDS = [
   },
   {
     heading: "Nosh",
-    image: "/images/studio-58.jpg",
+    image: "/images/gallery-11.jpg",
     alt: "Guests sharing a charcuterie board at Georgie's Social House in Lexington, KY",
     description:
       "A thoughtfully curated nosh menu of small bites designed to complement our artisanal cocktails, with charcuterie, wine, and pairings tailored to the spirit of your gathering.",
@@ -58,7 +58,7 @@ const CARDS = [
   },
   {
     heading: "Parties & Events",
-    image: "/images/parties-events.jpg",
+    image: "/images/gallery-20.jpg",
     alt: "Guests toasting cocktails at a celebration at Georgie's Social House",
     description:
       "Rediscover the joy of mingling. From our Friday Supper Club to happy hours, showers, and private events, Georgie's is Lexington's setting for unforgettable celebrations.",
@@ -98,7 +98,7 @@ export default function Home() {
       {/* Hero */}
       <section data-bg="dark" className="relative flex min-h-[92vh] items-center justify-center overflow-hidden pt-24 pb-32">
         <Image
-          src="/images/studio-282.jpg"
+          src="/images/gallery-07.jpg"
           alt="Georgie's Social House in Lexington, KY"
           fill
           priority
@@ -161,7 +161,7 @@ export default function Home() {
       {/* OUR SPACE — full-width parallax */}
       <section
         data-bg="dark"
-        className="relative bg-ink bg-[url('/images/studio-374.jpg')] bg-cover bg-fixed bg-center"
+        className="relative bg-ink bg-[url('/images/gallery-21.jpg')] bg-cover bg-center bg-scroll md:bg-fixed"
       >
         <div className="absolute inset-0 bg-ink/65" aria-hidden="true" />
         <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 py-28 text-center md:py-40">
@@ -242,7 +242,7 @@ export default function Home() {
       {/* THE EXPERIENCE — full-width parallax */}
       <section
         data-bg="dark"
-        className="relative bg-ink bg-[url('/images/gallery-16.jpg')] bg-cover bg-fixed bg-center"
+        className="relative bg-ink bg-[url('/images/gallery-16.jpg')] bg-cover bg-center bg-scroll md:bg-fixed"
       >
         <div className="absolute inset-0 bg-ink/75" aria-hidden="true" />
         <div className="relative z-10 mx-auto max-w-3xl px-6 py-24 md:py-32">

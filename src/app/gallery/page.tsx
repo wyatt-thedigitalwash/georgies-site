@@ -10,8 +10,9 @@ export const metadata = pageMeta({
 });
 
 // 21 gallery photos with their intrinsic dimensions, in the live order.
-const PHOTOS: { n: string; w: number; h: number }[] = [
-  { n: "01", w: 1000, h: 1500 },
+// `src` overrides the default /images/gallery-<n>.jpg path when set.
+const PHOTOS: { n: string; w: number; h: number; src?: string }[] = [
+  { n: "01", w: 2618, h: 3925, src: "/images/IMG_0050.png" },
   { n: "02", w: 1000, h: 1500 },
   { n: "03", w: 1000, h: 667 },
   { n: "04", w: 1000, h: 667 },
@@ -50,7 +51,7 @@ export default function GalleryPage() {
         {PHOTOS.map((p) => (
           <div key={p.n} className="break-inside-avoid">
             <Image
-              src={`/images/gallery-${p.n}.jpg`}
+              src={p.src ?? `/images/gallery-${p.n}.jpg`}
               alt={`Georgie's Social House in Lexington, KY: bar, cocktails, and event space (photo ${Number(p.n)} of 21)`}
               width={p.w}
               height={p.h}
