@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/parties-events', priority: 0.8 },
     { path: '/gallery', priority: 0.7 },
     { path: '/contact', priority: 0.7 },
+    { path: '/privacy-policy', priority: 0.3 },
   ];
   return routes.map((r) => ({
     url: `${baseUrl}${r.path}`,

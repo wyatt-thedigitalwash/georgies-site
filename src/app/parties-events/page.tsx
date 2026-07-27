@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
 import SectionHeading from "@/components/SectionHeading";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import JsonLd from "@/components/JsonLd";
 import { CONTACT } from "@/lib/site";
+import { pageMeta, breadcrumbSchema, serviceSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Party & Event Venue Lexington, KY",
+export const metadata = pageMeta({
+  pageName: "Private Parties & Events",
   description:
-    "Georgie's Social House is a downtown Lexington, KY bar and private event venue. Friday Supper Club, happy hour parties, bridal and baby showers, and private events.",
-};
+    "Host private parties and corporate events at Georgie's Social House in Lexington, KY, with craft cocktails, nosh, showers, supper club, and happy hours.",
+  path: "/parties-events",
+});
 
 type Event = {
   heading: string;
@@ -61,6 +63,20 @@ const EVENTS: Event[] = [
 export default function PartiesEventsPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Private Parties & Events", path: "/parties-events" },
+        ])}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: "Private Event & Party Venue",
+          description:
+            "Private events, corporate gatherings, Friday Supper Club, happy hour parties, and bridal and baby showers at Georgie's Social House in Lexington, KY.",
+          path: "/parties-events",
+        })}
+      />
       {/* Intro + event cards */}
       <section data-bg="light" className="bg-white py-16 md:py-24">
         <div className="mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
@@ -119,7 +135,7 @@ export default function PartiesEventsPage() {
             </p>
             <p>Text only: {CONTACT.textOnly}</p>
           </div>
-          <p className="mt-10 text-sm italic text-cream/50">
+          <p className="mt-10 text-sm italic text-cream/60">
             Event images shown courtesy of @sladesocial.
           </p>
         </div>

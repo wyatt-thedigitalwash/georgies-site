@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InstagramIcon, FacebookIcon, MapPinIcon } from "@/components/icons";
 import { NAV, EMPLOYMENT_PDF, SOCIAL } from "@/lib/site";
 
@@ -31,15 +31,64 @@ const MOBILE_LINKS = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-  // Lock body scroll and allow Escape to close while the menu is open.
+  const closeMenu = () => {
+    setOpen(false);
+    buttonRef.current?.focus();
+  };
+
+  // While the mobile menu is open: lock scroll, move focus into the menu,
+  // trap Tab within it, and let Escape close it (restoring focus to the toggle).
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+    const panel = panelRef.current;
+    const getFocusable = () => {
+      const els: HTMLElement[] = [];
+      if (buttonRef.current) els.push(buttonRef.current);
+      if (panel) {
+        els.push(
+          ...Array.from(
+            panel.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled])'
+            )
+          )
+        );
+      }
+      return els;
     };
+
+    // Move focus to the first menu item when the menu opens.
+    panel
+      ?.querySelector<HTMLElement>('a[href], button:not([disabled])')
+      ?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const els = getFocusable();
+      if (els.length === 0) return;
+      const first = els[0];
+      const last = els[els.length - 1];
+      const activeEl = document.activeElement as HTMLElement | null;
+      if (e.shiftKey) {
+        if (activeEl === first || !activeEl || !els.includes(activeEl)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (activeEl === last || !activeEl || !els.includes(activeEl)) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
@@ -70,7 +119,7 @@ export default function Header() {
 
         {/* Right cluster — menu items then social icons */}
         <div className="hidden items-center gap-8 md:flex">
-          <nav aria-label="Primary">
+          <nav aria-label="Main navigation">
             <ul className="flex items-center gap-6 text-[15px]">
               {NAV.map((item) => (
                 <li key={item.href}>
@@ -102,11 +151,13 @@ export default function Header() {
 
         {/* Mobile hamburger — animated to an X */}
         <button
+          ref={buttonRef}
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="relative flex h-10 w-10 flex-col items-center justify-center gap-[6px] text-ink md:hidden"
+          aria-controls="mobile-menu"
+          className="relative flex h-11 w-11 flex-col items-center justify-center gap-[6px] text-ink md:hidden"
         >
           <span
             aria-hidden="true"
@@ -131,7 +182,7 @@ export default function Header() {
 
       {/* Backdrop — tap to close */}
       <div
-        onClick={() => setOpen(false)}
+        onClick={closeMenu}
         aria-hidden="true"
         className={`fixed inset-x-0 bottom-0 top-20 z-40 bg-ink/40 transition-opacity duration-300 md:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
@@ -140,7 +191,9 @@ export default function Header() {
 
       {/* Mobile panel — animated open/close */}
       <nav
-        aria-label="Mobile"
+        id="mobile-menu"
+        ref={panelRef}
+        aria-label="Mobile navigation"
         inert={!open}
         className={`grid overflow-hidden bg-sand transition-all duration-300 ease-out md:hidden ${
           open ? "grid-rows-[1fr] border-t border-ink/10 opacity-100" : "grid-rows-[0fr] opacity-0"

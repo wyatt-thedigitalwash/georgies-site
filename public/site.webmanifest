@@ -1,0 +1,21 @@
+{
+  "name": "Georgie's Social House",
+  "short_name": "Georgie's",
+  "description": "A modern bar and event venue in downtown Lexington, KY. Refined adulting with handcrafted cocktails, wine, bourbon, and nosh.",
+  "theme_color": "#4d5b50",
+  "background_color": "#f2f1df",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
 import ContactForm from "@/components/ContactForm";
 import SectionHeading from "@/components/SectionHeading";
 import Button from "@/components/Button";
+import JsonLd from "@/components/JsonLd";
 import { CONTACT, HOURS, EMPLOYMENT_PDF } from "@/lib/site";
+import { pageMeta, breadcrumbSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
+export const metadata = pageMeta({
+  pageName: "Contact",
   description:
-    "Contact Georgie's Social House at 161 N Limestone St., Lexington, KY 40507. Hours, email, and text line for our downtown Lexington bar and event venue.",
-};
+    "Contact Georgie's Social House in downtown Lexington, KY. Get our address, hours, email, and text line, or plan a visit to our bar and event venue today.",
+  path: "/contact",
+});
 
 const DETAILS = [
   {
@@ -50,6 +52,12 @@ const DETAILS = [
 export default function ContactPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       {/* Header + info + form */}
       <section data-bg="light" className="bg-white py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-6 text-center">
@@ -67,7 +75,7 @@ export default function ContactPage() {
           <dl className="space-y-8">
             {DETAILS.map((d) => (
               <div key={d.label}>
-                <dt className="text-xs uppercase tracking-[0.25em] text-brand/70">
+                <dt className="text-xs uppercase tracking-[0.25em] text-brand">
                   {d.label}
                 </dt>
                 <dd className="mt-2 font-body text-lg leading-relaxed text-ink">

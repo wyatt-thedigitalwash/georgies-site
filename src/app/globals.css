@@ -29,6 +29,30 @@ body {
 }
 
 /*
+ * Visible keyboard focus indicator.
+ * Dual-tone (dark outline + light halo) so it stays visible on both light
+ * surfaces (white/cream/sand) and dark surfaces (ink/brand). Only shows for
+ * keyboard users via :focus-visible, so mouse interaction is unchanged.
+ */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--cream);
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
  * Section spacing rule
  * -----------------------------------------------------------------------------
  * Each section defines its own vertical padding. Mark every section with a

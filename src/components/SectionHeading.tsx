@@ -36,6 +36,7 @@ export default function SectionHeading({
         <Image
           src="/images/brush-underline.svg"
           alt=""
+          aria-hidden="true"
           width={487}
           height={24}
           className={`mt-3 h-3 w-64 max-w-full sm:w-80 ${align === "center" ? "mx-auto" : ""}`}

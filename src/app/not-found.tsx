@@ -1,18 +1,27 @@
-import Link from 'next/link';
+import type { Metadata } from "next";
+import SectionHeading from "@/components/SectionHeading";
+import Button from "@/components/Button";
+
+export const metadata: Metadata = {
+  title: { absolute: "Page Not Found | Georgie's Social House" },
+};
 
 export default function NotFound() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <h1 className="text-4xl font-semibold tracking-tight">Page not found</h1>
-      <p className="mt-4 text-base text-gray-600">
-        Sorry, we could not find the page you were looking for.
+    <section
+      data-bg="light"
+      className="flex min-h-[60vh] flex-col items-center justify-center bg-white px-6 py-24 text-center md:py-32"
+    >
+      <SectionHeading as="h1" align="center" color="green">
+        Page Not Found
+      </SectionHeading>
+      <p className="mt-6 max-w-md text-[17px] leading-relaxed text-ink/80">
+        Sorry, we could not find the page you were looking for. It may have
+        moved or no longer exists.
       </p>
-      <Link
-        href="/"
-        className="mt-8 inline-block rounded-md bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800"
-      >
-        Go Home
-      </Link>
-    </main>
+      <Button href="/" variant="solid" className="mt-8">
+        go home
+      </Button>
+    </section>
   );
 }

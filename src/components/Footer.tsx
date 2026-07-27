@@ -6,7 +6,7 @@ const FOOTER_LINKS = [
   { label: "Join our team", href: EMPLOYMENT_PDF, external: true },
   { label: "Menu", href: "/menu", external: false },
   { label: "Contact", href: "/contact", external: false },
-  { label: "Privacy Policy", href: "https://georgieslexington.com/privacy-policy/", external: true },
+  { label: "Privacy Policy", href: "/privacy-policy", external: false },
 ];
 
 const labelClass =
@@ -35,7 +35,7 @@ export default function Footer() {
             {HOURS.map((h) => (
               <li key={h.days} className="text-base">
                 <span className="font-semibold uppercase">{h.days}</span>
-                <span className="mx-2 text-cream/40">·</span>
+                <span className="mx-2 text-cream/60" aria-hidden="true">·</span>
                 <span className="uppercase">{h.time}</span>
               </li>
             ))}

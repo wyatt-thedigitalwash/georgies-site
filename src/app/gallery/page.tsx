@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Image from "next/image";
+import JsonLd from "@/components/JsonLd";
+import { pageMeta, breadcrumbSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Gallery",
+export const metadata = pageMeta({
+  pageName: "Gallery",
   description:
-    "A photo gallery of Georgie's Social House: the bar, cocktails, nosh, and event space in downtown Lexington, KY.",
-};
+    "Browse the Georgie's Social House photo gallery in Lexington, KY: our modern bar, handcrafted cocktails, nosh, and private event space in one social setting.",
+  path: "/gallery",
+});
 
 // 21 gallery photos with their intrinsic dimensions, in the live order.
 const PHOTOS: { n: string; w: number; h: number }[] = [
@@ -35,6 +37,15 @@ const PHOTOS: { n: string; w: number; h: number }[] = [
 export default function GalleryPage() {
   return (
     <section data-bg="light" className="bg-white">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Gallery", path: "/gallery" },
+        ])}
+      />
+      <h1 className="sr-only">
+        Georgie&apos;s Social House Photo Gallery -- Lexington, KY
+      </h1>
       <div className="columns-1 gap-2 sm:columns-2 [&>*]:mb-2">
         {PHOTOS.map((p) => (
           <div key={p.n} className="break-inside-avoid">

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -12,6 +13,7 @@ const GENERAL_INQUIRY = "General question";
 const INQUIRY_OPTIONS = [
   GENERAL_INQUIRY,
   "Private event",
+  "Corporate event",
   "Friday Supper Club",
   "Happy Hour Party",
   "Bridal or Baby Shower",
@@ -21,13 +23,22 @@ const GUEST_OPTIONS = ["Under 15", "15–30", "30–50", "50+"];
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [fieldErrors, setFieldErrors] = useState<string[]>([]);
   const [inquiry, setInquiry] = useState<string>(GENERAL_INQUIRY);
   const showEventFields = inquiry !== GENERAL_INQUIRY;
+
+  // When a field failed server validation, point it at the visible alert and
+  // mark it invalid for assistive tech.
+  const invalid = (field: string) =>
+    fieldErrors.includes(field)
+      ? ({ "aria-invalid": true, "aria-describedby": "form-error" } as const)
+      : {};
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("submitting");
     setErrorMsg("");
+    setFieldErrors([]);
 
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -41,6 +52,7 @@ export default function ContactForm() {
       guestCount: showEventFields ? data.get("guestCount") : "",
       message: data.get("message"),
       smsConsent: data.get("smsConsent") === "on",
+      company: data.get("company"),
     };
 
     try {
@@ -51,10 +63,13 @@ export default function ContactForm() {
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        const firstError =
-          body?.errors && typeof body.errors === "object"
-            ? Object.values(body.errors)[0]
-            : body?.error;
+        const hasErrors = body?.errors && typeof body.errors === "object";
+        if (hasErrors) {
+          setFieldErrors(Object.keys(body.errors));
+        }
+        const firstError = hasErrors
+          ? Object.values(body.errors)[0]
+          : body?.error;
         setErrorMsg(
           typeof firstError === "string"
             ? firstError
@@ -87,6 +102,18 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      {/* Honeypot: hidden from users; bots that fill it are silently dropped. */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="company">Company</label>
+        <input
+          id="company"
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div>
         <label htmlFor="inquiryType" className={labelClasses}>
           I’m reaching out about
@@ -161,10 +188,12 @@ export default function ContactForm() {
               name="firstName"
               type="text"
               required
+              aria-required="true"
               autoComplete="given-name"
               aria-label="First name"
               placeholder="First"
               className={inputClasses}
+              {...invalid("firstName")}
             />
           </div>
           <div>
@@ -190,8 +219,10 @@ export default function ContactForm() {
           name="email"
           type="email"
           required
+          aria-required="true"
           autoComplete="email"
           className={`mt-1 ${inputClasses}`}
+          {...invalid("email")}
         />
       </div>
 
@@ -217,7 +248,9 @@ export default function ContactForm() {
           name="message"
           rows={5}
           required
+          aria-required="true"
           className={`mt-1 ${inputClasses}`}
+          {...invalid("message")}
         />
       </div>
 
@@ -233,12 +266,19 @@ export default function ContactForm() {
           Social House related to marketing, customer care and delivery
           notifications. You may reply STOP to opt-out at any time. Reply to HELP
           to (859) 212-9080 for assistance. Messages and data rates may apply.
-          Message frequency will vary. Learn more on our Privacy Policy page.
+          Message frequency will vary. Learn more on our{" "}
+          <Link
+            href="/privacy-policy"
+            className="underline underline-offset-2 hover:text-ink"
+          >
+            Privacy Policy
+          </Link>{" "}
+          page.
         </label>
       </div>
 
       {status === "error" && (
-        <p role="alert" className="text-sm text-red-700">
+        <p id="form-error" role="alert" className="text-sm text-red-700">
           {errorMsg}
         </p>
       )}

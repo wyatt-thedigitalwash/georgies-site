@@ -43,9 +43,9 @@ export default function Card({
         />
       </div>
       <div className="flex flex-1 flex-col">
-        <h3 className="mt-7 font-display text-2xl uppercase tracking-wide text-ink">
+        <h2 className="mt-7 font-display text-2xl uppercase tracking-wide text-ink">
           {heading}
-        </h3>
+        </h2>
         <Image
           src="/images/brush-underline.svg"
           alt=""

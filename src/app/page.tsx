@@ -4,7 +4,16 @@ import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import JsonLd from "@/components/JsonLd";
 import { SOCIAL, TAGLINE } from "@/lib/site";
+import { pageMeta, breadcrumbSchema } from "@/lib/seo";
+
+export const metadata = pageMeta({
+  pageName: "Modern Bar & Event Venue",
+  description:
+    "Georgie's Social House is a modern bar and private event venue in downtown Lexington, KY, serving handcrafted cocktails, wine, bourbon, and shared nosh.",
+  path: "/",
+});
 
 const REFINED_IMAGES = [
   {
@@ -85,6 +94,7 @@ const EXPERIENCE_PARAGRAPHS = [
 export default function Home() {
   return (
     <>
+      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }])} />
       {/* Hero */}
       <section data-bg="dark" className="relative flex min-h-[92vh] items-center justify-center overflow-hidden pt-24 pb-32">
         <Image

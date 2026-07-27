@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import MenuSection from "@/components/MenuSection";
 import {
   COCKTAIL_SECTIONS,
@@ -31,16 +31,33 @@ const NARROW_BOTTLE = WINE_BOTTLE_SECTIONS.filter(
 
 export default function MenuTabs() {
   const [active, setActive] = useState<TabId>("cocktails");
+  const tablistRef = useRef<HTMLDivElement>(null);
+
+  // Arrow / Home / End key support for the tablist (WAI-ARIA tabs pattern).
+  const onTabKeyDown = (e: React.KeyboardEvent, idx: number) => {
+    let next: number | null = null;
+    if (e.key === "ArrowRight") next = (idx + 1) % TABS.length;
+    else if (e.key === "ArrowLeft") next = (idx - 1 + TABS.length) % TABS.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = TABS.length - 1;
+    else return;
+    e.preventDefault();
+    setActive(TABS[next].id);
+    tablistRef.current
+      ?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+      [next]?.focus();
+  };
 
   return (
     <div>
       {/* Tab buttons */}
       <div
+        ref={tablistRef}
         role="tablist"
         aria-label="Menu"
         className="flex flex-wrap items-center justify-center gap-3"
       >
-        {TABS.map((t) => (
+        {TABS.map((t, i) => (
           <button
             key={t.id}
             type="button"
@@ -48,7 +65,9 @@ export default function MenuTabs() {
             id={`tab-${t.id}`}
             aria-selected={active === t.id}
             aria-controls={`panel-${t.id}`}
+            tabIndex={active === t.id ? 0 : -1}
             onClick={() => setActive(t.id)}
+            onKeyDown={(e) => onTabKeyDown(e, i)}
             className={`border border-brand px-5 py-2 text-sm uppercase tracking-wide transition-colors duration-300 ease-out ${
               active === t.id
                 ? "bg-brand text-white"
@@ -90,7 +109,7 @@ export default function MenuTabs() {
             <MenuSection key={s.id} section={s} />
           ))}
         </div>
-        <p className="mb-10 mt-16 text-center text-sm uppercase tracking-[0.3em] text-ink/50">
+        <p className="mb-10 mt-16 text-center text-sm uppercase tracking-[0.3em] text-ink/70">
           Wine by the Bottle
         </p>
         <div className="space-y-12">

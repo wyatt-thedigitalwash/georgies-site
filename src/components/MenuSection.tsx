@@ -10,7 +10,7 @@ function ItemRow({ item }: { item: MenuItem }) {
         )}
       </div>
       {item.desc && (
-        <p className="mt-1 text-sm italic text-ink/55">{item.desc}</p>
+        <p className="mt-1 text-sm italic text-ink/70">{item.desc}</p>
       )}
       {item.ingredients && (
         <p className="mt-1 text-sm leading-relaxed text-ink/70">
@@ -18,7 +18,7 @@ function ItemRow({ item }: { item: MenuItem }) {
         </p>
       )}
       {item.detail && (
-        <p className="mt-1 text-sm text-ink/60">{item.detail}</p>
+        <p className="mt-1 text-sm text-ink/70">{item.detail}</p>
       )}
     </li>
   );
@@ -47,7 +47,7 @@ export default function MenuSection({
           {section.title}
         </h2>
         {section.note && (
-          <p className="mt-2 text-sm italic text-ink/55">{section.note}</p>
+          <p className="mt-2 text-sm italic text-ink/70">{section.note}</p>
         )}
       </div>
       <ul
