@@ -46,7 +46,7 @@ const EVENTS: Event[] = [
   },
   {
     heading: "Corporate Events",
-    image: "/images/home-hero.jpg",
+    image: "/images/studio-279.jpg",
     alt: "A corporate gathering at Georgie's Social House in Lexington, KY",
     body: "Host your next team gathering at Georgie’s. From client receptions and team-building outings to holiday parties and networking mixers, our stylish venue and polished service make every corporate event feel effortless and memorable.",
     cta: { label: "inquire now", href: "/contact" },
