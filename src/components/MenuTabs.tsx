@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MenuSection from "@/components/MenuSection";
 import {
   COCKTAIL_SECTIONS,
@@ -19,6 +19,9 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
+const isTabId = (value: string): value is TabId =>
+  TABS.some((t) => t.id === value);
+
 // The long bottle lists render full-width in two internal columns; the short
 // ones sit two-up in a grid.
 const WIDE_BOTTLE_IDS = ["red-wine-bottle", "white-wine-bottle", "champagne-bottle"];
@@ -33,6 +36,28 @@ export default function MenuTabs() {
   const [active, setActive] = useState<TabId>("cocktails");
   const tablistRef = useRef<HTMLDivElement>(null);
 
+  // Support deep links like /menu#wine and /menu#happy-hour: open the matching
+  // tab on load, and stay in sync if the hash changes while on the page.
+  useEffect(() => {
+    const syncFromHash = () => {
+      const id = window.location.hash.replace("#", "");
+      if (isTabId(id)) setActive(id);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  const selectTab = (id: TabId) => {
+    setActive(id);
+    // Reflect the choice in the URL so the tab can be linked and shared.
+    if (window.history.replaceState) {
+      window.history.replaceState(null, "", `#${id}`);
+    } else {
+      window.location.hash = id;
+    }
+  };
+
   // Arrow / Home / End key support for the tablist (WAI-ARIA tabs pattern).
   const onTabKeyDown = (e: React.KeyboardEvent, idx: number) => {
     let next: number | null = null;
@@ -42,7 +67,7 @@ export default function MenuTabs() {
     else if (e.key === "End") next = TABS.length - 1;
     else return;
     e.preventDefault();
-    setActive(TABS[next].id);
+    selectTab(TABS[next].id);
     tablistRef.current
       ?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
       [next]?.focus();
@@ -66,7 +91,7 @@ export default function MenuTabs() {
             aria-selected={active === t.id}
             aria-controls={`panel-${t.id}`}
             tabIndex={active === t.id ? 0 : -1}
-            onClick={() => setActive(t.id)}
+            onClick={() => selectTab(t.id)}
             onKeyDown={(e) => onTabKeyDown(e, i)}
             className={`border border-brand px-5 py-2 text-sm uppercase tracking-wide transition-colors duration-300 ease-out ${
               active === t.id
