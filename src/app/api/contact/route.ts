@@ -15,16 +15,25 @@ const MAX = {
   message: 2000,
 } as const;
 
-// Basic in-memory rate limiting: 3 submissions per 5 minutes per IP.
+// Basic in-memory rate limiting: 8 submissions per 10 minutes per IP.
 // NOTE: per-instance only. Behind multiple serverless instances this is
 // best-effort; a shared store (e.g. Upstash/Redis) would be needed for a hard
 // guarantee. Sufficient as a first line of defense against form spam.
-const RATE_LIMIT = 3;
-const RATE_WINDOW_MS = 5 * 60 * 1000;
+const RATE_LIMIT = 8;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
 const hits = new Map<string, number[]>();
 
 function isRateLimited(ip: string): boolean {
+  // Never throttle when the client IP is unknown: that key is shared by every
+  // visitor, so counting against it locks the whole site out at once. The
+  // honeypot and validation still apply.
+  if (ip === "unknown") return false;
+
   const now = Date.now();
+  // Drop stale keys so the map does not grow without bound.
+  for (const [key, times] of hits) {
+    if (times.every((t) => now - t >= RATE_WINDOW_MS)) hits.delete(key);
+  }
   const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
   if (recent.length >= RATE_LIMIT) {
     hits.set(ip, recent);
@@ -122,15 +131,19 @@ export async function POST(request: Request) {
   const to = isEventInquiry ? eventsTo : generalTo;
   const from = process.env.CONTACT_FROM_EMAIL || "Georgie's Website <onboarding@resend.dev>";
 
-  // If email is not configured yet, accept the submission without failing the
-  // user. Wire RESEND_API_KEY (and optionally CONTACT_TO/FROM_EMAIL) to enable.
+  // Without an API key nothing can be sent. Fail loudly rather than showing the
+  // visitor a thank-you for a message that was never delivered.
   if (!apiKey) {
-    return NextResponse.json({ ok: true, delivered: false });
+    console.error("Contact form: RESEND_API_KEY is not set; message dropped.");
+    return NextResponse.json(
+      { error: "Something went wrong sending your message. Please try again." },
+      { status: 500 }
+    );
   }
 
   try {
     const resend = new Resend(apiKey);
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from,
       to,
       replyTo: email,
@@ -148,6 +161,18 @@ export async function POST(request: Request) {
         message,
       ].join("\n"),
     });
+
+    // The Resend SDK reports API failures by returning an error object, not by
+    // throwing. Without this check a rejected send still looks like a success.
+    if (error) {
+      console.error("Contact form send rejected by Resend:", error);
+      return NextResponse.json(
+        { error: "Something went wrong sending your message. Please try again." },
+        { status: 502 }
+      );
+    }
+
+    console.info(`Contact form sent to ${to} (id: ${data?.id})`);
     return NextResponse.json({ ok: true, delivered: true });
   } catch (err) {
     // Log the real error server-side; return a generic message to the client.
