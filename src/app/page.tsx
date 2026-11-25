@@ -61,7 +61,7 @@ const CARDS = [
     image: "/images/gallery-20.jpg",
     alt: "Guests toasting cocktails at a celebration at Georgie's Social House",
     description:
-      "Rediscover the joy of mingling. From our Friday Supper Club to happy hours, showers, and private events, Georgie's is Lexington's setting for unforgettable celebrations.",
+      "Rediscover the joy of mingling. From milestone celebrations to happy hours, showers, and private events, Georgie's is Lexington's setting for unforgettable celebrations.",
     cta: { label: "explore parties", href: "/parties-events" },
   },
 ];

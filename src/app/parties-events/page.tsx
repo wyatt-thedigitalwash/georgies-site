@@ -6,9 +6,9 @@ import { CONTACT } from "@/lib/site";
 import { pageMeta, breadcrumbSchema, serviceSchema } from "@/lib/seo";
 
 export const metadata = pageMeta({
-  pageName: "Private Parties & Events",
+  pageName: "Parties & Private Events",
   description:
-    "Host private parties and corporate events at Georgie's Social House in Lexington, KY, with craft cocktails, nosh, showers, supper club, and happy hours.",
+    "Host milestone celebrations, showers, private parties, and corporate events at Georgie's Social House in Lexington, KY, with handcrafted cocktails and polished service.",
   path: "/parties-events",
 });
 
@@ -23,10 +23,10 @@ type Event = {
 
 const EVENTS: Event[] = [
   {
-    heading: "Friday Supper Club",
+    heading: "Milestone Celebrations",
     image: "/images/parties-friday-supper-club.jpg",
-    alt: "Food being served at the event venue in Lexington, KY",
-    body: "Rather than traditional seating, embrace the joy of mingling in our uniquely designed venue. Handcrafted cocktails, a curated selection of wines and bourbons, and exceptional service set the stage for a gathering that fosters connection and laughter.",
+    alt: "Guests celebrating a milestone at the event venue in Lexington, KY",
+    body: "Rather than traditional seating, embrace the joy of mingling in our uniquely designed venue. Engagement party, retirement and birthday celebrations, or special anniversaries, let us help you celebrate. We can accommodate groups of 20 or more.",
     cta: { label: "inquire now", href: "/contact" },
   },
   {
@@ -34,14 +34,14 @@ const EVENTS: Event[] = [
     image: "/images/parties-bridal-baby-showers.jpg",
     alt: "Loved ones enjoying an intimate bridal shower party",
     imagePosition: "top",
-    body: "Immerse yourself in a gorgeous atmosphere with a curated selection of wines, cocktails, charcuterie, and nosh. Our stylish venue is the perfect backdrop for creating unforgettable memories with the people who matter most.",
+    body: "Ideal gathering times for these events are Saturdays and Sundays at 2pm. Rates start at $20 a person with a 20 guest minimum for these days and times, however we are happy to accommodate other times for different rates. Desserts and decoration for your area are welcomed.",
     cta: { label: "inquire now", href: "/contact" },
   },
   {
     heading: "Private Events",
     image: "/images/parties-private-events.jpg",
     alt: "A private event set up at Georgie's Social House bar",
-    body: "Georgie’s Social House offers an exclusive setting for private events. Whether it is a birthday, rehearsal dinner, or corporate gathering, enjoy our stylish and inviting bar atmosphere reserved just for your group.",
+    body: "Georgie’s offers an exclusive setting for private events. Options to customize include entertainment, catered food, bring your own decor, and hold your party when we’re typically closed. Rates begin at $1,500 and are dependent upon party day and timeframe.",
     cta: { label: "inquire now", href: "/contact" },
   },
   {
@@ -66,14 +66,14 @@ export default function PartiesEventsPage() {
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Private Parties & Events", path: "/parties-events" },
+          { name: "Parties & Private Events", path: "/parties-events" },
         ])}
       />
       <JsonLd
         data={serviceSchema({
           name: "Private Event & Party Venue",
           description:
-            "Private events, corporate gatherings, Friday Supper Club, happy hour parties, and bridal and baby showers at Georgie's Social House in Lexington, KY.",
+            "Private events, corporate gatherings, milestone celebrations, happy hour parties, and bridal and baby showers at Georgie's Social House in Lexington, KY.",
           path: "/parties-events",
         })}
       />
@@ -81,12 +81,11 @@ export default function PartiesEventsPage() {
       <section data-bg="light" className="bg-white py-16 md:py-24">
         <div className="mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
           <SectionHeading as="h1" align="center" color="dark">
-            Private Parties &amp; Events
+            Parties &amp; Private Events
           </SectionHeading>
           <p className="mt-6 text-[17px] leading-relaxed text-ink/90">
-            Rediscover the joy of gathering. From intimate showers to corporate
-            celebrations, Georgie’s Social House is Lexington’s setting for
-            handcrafted cocktails, polished service, and an atmosphere built for
+            Fully customizable options for every kind of gathering offering
+            handcrafted cocktails, polished service and an atmosphere built for
             connection.
           </p>
           <Button href="/contact" variant="solid" className="mt-8">

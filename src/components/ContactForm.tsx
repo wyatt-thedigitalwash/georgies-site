@@ -14,7 +14,7 @@ const INQUIRY_OPTIONS = [
   GENERAL_INQUIRY,
   "Private event",
   "Corporate event",
-  "Friday Supper Club",
+  "Milestone Celebration",
   "Happy Hour Party",
   "Bridal or Baby Shower",
 ];
